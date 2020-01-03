@@ -32,7 +32,7 @@ class User
     private $email;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string")
      */
     private $birthdaydate;
 
@@ -82,12 +82,12 @@ class User
         return $this;
     }
 
-    public function getBirthdaydate(): ?\DateTimeInterface
+    public function getBirthdaydate(): ?string
     {
         return $this->birthdaydate;
     }
 
-    public function setBirthdaydate(\DateTimeInterface $birthdaydate): self
+    public function setBirthdaydate(string $birthdaydate): self
     {
         $this->birthdaydate = $birthdaydate;
 

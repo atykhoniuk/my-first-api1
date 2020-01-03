@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -29,9 +30,22 @@ class UserController extends AbstractController
         ]);
     }
 
-    /*public function createUser():Response
+
+    /**
+     * @Route("/user/add", name="user",methods={"POST"})
+     */
+    public function createUser(Request $request):Response
     {
-        $entityManager=$this->getDoctrine()->getManager();
+        /** @var Serializer $serializer*/
+        $serializer=$this->get('serializer');
+        $userpost=$serializer->deserialize($request->getContent(), User::class,'json');
+        $user=$this->getDoctrine()->getManager();
+        $user->persist($userpost);
+        $user->flush();
+        return $this->json($userpost);
+
+
+        /*$entityManager=$this->getDoctrine()->getManager();
         $user= new User();
         $user->setFio('Aleksandr Tihonyuk');
         $user->setPhoneNumber('0992445148');
@@ -46,8 +60,8 @@ class UserController extends AbstractController
 
         $entityManager->flush();
 
-        return new Response('New user created with id'. $user->getId());
-    }*/
+        return new Response('New user created with id'. $user->getId());*/
+    }
     /**
      * @Route("/user/{id}", name="user_show")
      */
